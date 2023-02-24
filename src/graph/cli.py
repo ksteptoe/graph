@@ -4,8 +4,10 @@ which will install the command $(package) inside your current environment.
 """
 
 import logging
+
 import click
-from .api import graph_api
+
+from graph.api import graph_api
 
 __author__ = "Kevin Steptoe"
 __copyright__ = "Kevin Steptoe"
@@ -17,16 +19,15 @@ _logger = logging.getLogger(__name__)
 
 
 @click.command()
-@click.version_option(__version__, '--version')
-@click.argument('n', type=int)
-@click.option('-v', '--verbose', 'loglevel', type=int, flag_value=logging.INFO)
-@click.option('-vv', '--very_verbose', 'loglevel', type=int, flag_value=logging.DEBUG)
-def cli(n, loglevel):
+@click.version_option(__version__, "--version")
+@click.option("-v", "--verbose", "loglevel", type=int, flag_value=logging.INFO)
+@click.option("-vv", "--very_verbose", "loglevel", type=int, flag_value=logging.DEBUG)
+def cli(loglevel):
     """Calls :func:`main` passing the CLI arguments extracted from click
 
     This function can be used as entry point to create console scripts with setuptools.
     """
-    graph_api(n, loglevel)
+    graph_api(loglevel)
 
 
 if __name__ == "__main__":
