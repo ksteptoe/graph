@@ -25,34 +25,43 @@ def setup_logging(loglevel):
     )
 
 
-def graph_api(loglevel: int):
+def not_contiguous(lst):
+    lst.sort()
+    for i in range(1, len(lst)):
+        if list[i] - list[i - 1] > 1:
+            return False
+    return True
+
+
+def graph_api(the_map, loglevel: int):
     """Wrapper allowing :func: $(package) to be called with string
     arguments in a CLI fashion
 
     Args:
+      the_map: dict
       loglevel: int
     """
     setup_logging(loglevel)
     _logger.info(f"Version: {__version__}")
     print("Running Graph")
-    graph()
+    graph(the_map)
     _logger.info("Script ends here")
 
 
-def graph():
+def graph(the_map):
     """
     Build graph
     """
-    g = Graph(4)
-    g.addEdge(0, 1)
-    g.addEdge(0, 2)
-    g.addEdge(0, 3)
-    g.addEdge(2, 0)
-    g.addEdge(2, 1)
-    g.addEdge(1, 3)
+    node_set = {node for nodes in the_map for node in nodes}
+    assert not_contiguous(node_set)
+    node_tuples = [tuple(i) for i in the_map]
+    g = Graph(len(node_set))
+    for edge1, edge2 in node_tuples:
+        g.addEdge(edge1, edge2)
+    start = 2
+    destination = 3
 
-    s = 2
-    d = 3
-
-    # Function call
-    print(g.countPaths(s, d))
+    # Calculate the number of paths with CountPaths
+    print(
+        f"The number of routes through the park are {g.countPaths(start, destination)}"
+    )

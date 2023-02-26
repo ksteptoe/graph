@@ -6,6 +6,7 @@ which will install the command $(package) inside your current environment.
 import logging
 
 import click
+import yaml
 
 from graph.api import graph_api
 
@@ -19,15 +20,22 @@ _logger = logging.getLogger(__name__)
 
 
 @click.command()
+@click.argument("the_map", type=click.Path(exists=True))
 @click.version_option(__version__, "--version")
 @click.option("-v", "--verbose", "loglevel", type=int, flag_value=logging.INFO)
 @click.option("-vv", "--very_verbose", "loglevel", type=int, flag_value=logging.DEBUG)
-def cli(loglevel):
+def cli(the_map, loglevel):
     """Calls :func:`main` passing the CLI arguments extracted from click
 
     This function can be used as entry point to create console scripts with setuptools.
     """
-    graph_api(loglevel)
+    map_dic = []
+    with open(the_map, "r") as stream:
+        try:
+            map_dic = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(exc)
+    graph_api(map_dic, loglevel)
 
 
 if __name__ == "__main__":
