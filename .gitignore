@@ -54,4 +54,4 @@ MANIFEST
 .python-version
 venv/*
 src/graph/netx.ipynb
-tests/tmp/o
+tests/tmp/*
