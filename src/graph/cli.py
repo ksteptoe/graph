@@ -21,10 +21,12 @@ _logger = logging.getLogger(__name__)
 
 @click.command()
 @click.argument("the_map", type=click.Path(exists=True))
+@click.option("-s", "--start", type=int, default=0)
+@click.option("-d", "--destination", type=int, default=1)
 @click.version_option(__version__, "--version")
 @click.option("-v", "--verbose", "loglevel", type=int, flag_value=logging.INFO)
 @click.option("-vv", "--very_verbose", "loglevel", type=int, flag_value=logging.DEBUG)
-def cli(the_map, loglevel):
+def cli(the_map, start, destination, loglevel):
     """Calls :func:`main` passing the CLI arguments extracted from click
 
     This function can be used as entry point to create console scripts with setuptools.
@@ -35,7 +37,7 @@ def cli(the_map, loglevel):
             map_dic = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
             print(exc)
-    graph_api(map_dic, loglevel)
+    graph_api(map_dic, start, destination, loglevel)
 
 
 if __name__ == "__main__":
